@@ -3,6 +3,7 @@ import type { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 import { refresh } from "../api/Api";
 import store from "../redux/store/store";
 import { logout } from "../redux/slice/userSlice";
+const BaseUrl = import.meta.env.VITE_BACKEND_URL;
 
 
 const attachInterceptors = (instance: AxiosInstance) => {
@@ -46,7 +47,7 @@ const attachInterceptors = (instance: AxiosInstance) => {
 };
 
 export const axiosInstance = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: BaseUrl,
   headers: {
     "Content-Type": "application/json",
   },
