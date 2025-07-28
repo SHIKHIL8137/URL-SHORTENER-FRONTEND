@@ -44,7 +44,7 @@ const App: React.FC = () => {
           toast.error(val.data?.message);
         }
       })
-      .catch((err) => {
+      .catch((err:any) => {
         toast.error(err.response.data.message.message);
       });
   }

@@ -15,7 +15,7 @@ const Redirect = () => {
     }
 
     shortLinks(shordId)
-      .then((response) => {
+      .then((response:any) => {
         const url = response?.data;
         if (url) {
           setTimeout(() => {
@@ -26,8 +26,8 @@ const Redirect = () => {
           navigate('/');
         }
       })
-      .catch(() => {
-        toast.error("Redirect failed");
+      .catch((err:any) => {
+        toast.error("Redirect failed",err);
         navigate('/');
       });
   }, [shordId, navigate]);
