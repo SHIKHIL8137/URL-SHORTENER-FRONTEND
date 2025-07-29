@@ -37,7 +37,7 @@ const UrlListItem: React.FC<UrlListItemProps> = ({ url }) => {
             <div className="flex items-center gap-2">
            <p className="text-sky-600 font-medium">{`${BaseUrl}/${url?.shortUrl}`}</p>
               <button
-                onClick={() => copyToClipboard(`${BaseUrl}/url/${url?.shortUrl}`)}
+                onClick={() => copyToClipboard(`${BaseUrl}/${url?.shortUrl}`)}
                 className="p-1 rounded hover:bg-gray-100 transition-colors"
                 title="Copy to clipboard"
               >
