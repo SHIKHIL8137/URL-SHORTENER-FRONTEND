@@ -162,7 +162,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           ))}
           {hasMore && (
             <div ref={loaderRef} className="text-center py-6 text-gray-500">
-              Loading more...
+              <LoadingSpinner />
             </div>
           )}
         </div>
