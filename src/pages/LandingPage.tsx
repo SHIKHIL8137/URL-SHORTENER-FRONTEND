@@ -1,42 +1,65 @@
-import {BarChart3, Link, User} from 'lucide-react'
-import Button from '../components/Button';
-import type { LandingPageProps } from '../interfaces/data.interfaces';
-
+import { BarChart3, Link, Menu, User, X } from "lucide-react";
+import { useState } from "react";
+import Button from "../components/Button";
+import type { LandingPageProps } from "../interfaces/data.interfaces";
 
 const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-50 to-white">
-      <header className="bg-white/80 backdrop-blur-sm shadow-sm">
+
+      <header className="bg-white/80 backdrop-blur-sm shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
+
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-sky-100 rounded-full flex items-center justify-center">
                 <Link className="w-6 h-6 text-sky-600" />
               </div>
-              <h1 className="text-2xl font-bold text-gray-900">URL Shortener</h1>
+              <h1 className="text-2xl font-bold text-gray-900">
+                URL Shortener
+              </h1>
             </div>
 
-            <Button onClick={onGetStarted}>
-              Get Started
-            </Button>
+
+            <div className="hidden md:block">
+              <Button onClick={onGetStarted}>Get Started</Button>
+            </div>
+
+
+            <div className="md:hidden">
+              <button onClick={() => setMenuOpen(!menuOpen)}>
+                {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
           </div>
+
+
+          {menuOpen && (
+            <div className="md:hidden pb-4">
+              <Button onClick={onGetStarted} className="w-full">
+                Get Started
+              </Button>
+            </div>
+          )}
         </div>
       </header>
 
-      {/* Hero Section */}
+
       <section className="py-20 text-center">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
             <div className="w-24 h-24 bg-sky-100 rounded-full flex items-center justify-center mx-auto mb-8">
               <Link className="w-12 h-12 text-sky-600" />
             </div>
-            <h1 className="text-5xl font-bold text-gray-900 mb-6">
+            <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
               Shorten URLs with
               <span className="text-sky-600 block">Style & Analytics</span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
               Transform long, complex URLs into short, shareable links. Track clicks, 
-              manage your links, and get detailed analytics - all in one place.
+              manage your links, and get detailed analytics — all in one place.
             </p>
             <Button onClick={onGetStarted} className="text-lg px-8 py-4">
               Start Shortening URLs
@@ -45,7 +68,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
         </div>
       </section>
 
-      {/* Features Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -57,7 +79,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
             <div className="text-center p-6">
               <div className="w-16 h-16 bg-sky-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Link className="w-8 h-8 text-sky-600" />
@@ -66,8 +88,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
                 Instant Shortening
               </h3>
               <p className="text-gray-600">
-                Convert long URLs into short, memorable links in seconds. 
-                Perfect for social media, emails, and anywhere space matters.
+                Convert long URLs into short, memorable links in seconds.
               </p>
             </div>
 
@@ -79,8 +100,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
                 Detailed Analytics
               </h3>
               <p className="text-gray-600">
-                Track clicks, monitor performance, and understand your audience 
-                with comprehensive analytics and reporting.
+                Track clicks and performance with real-time analytics.
               </p>
             </div>
 
@@ -92,15 +112,13 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
                 Secure & Private
               </h3>
               <p className="text-gray-600">
-                Your links are protected with secure authentication and 
-                encrypted storage. Only you can manage your URLs.
+                Your links are protected and accessible only by you.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-sky-600 to-sky-700">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-4">
@@ -109,7 +127,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
           <p className="text-xl text-sky-100 mb-8">
             Join thousands of users who trust us with their links every day.
           </p>
-          <Button 
+          <Button
             onClick={onGetStarted}
             variant="secondary"
             className="bg-white text-sky-600 hover:bg-gray-50 text-lg px-8 py-4"
@@ -119,7 +137,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
@@ -137,4 +154,4 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
   );
 };
 
-export default LandingPage
+export default LandingPage;
