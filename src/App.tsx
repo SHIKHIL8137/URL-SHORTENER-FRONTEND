@@ -9,7 +9,7 @@ import { logout } from "./redux/slice/userSlice";
 import { fetchData } from "./redux/thunk/fetchUser";
 import { toast, Toaster } from "sonner";
 import { logoutUser } from "./api/Api";
-import { Routes,Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Redirect from "./components/Redirect";
 const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<string>("landing");
@@ -17,7 +17,6 @@ const App: React.FC = () => {
   const { user, isAuthenticated } = useSelector(
     (state: RootState) => state.user
   );
-
 
   const handleLogin = () => {
     dispatch(fetchData());
@@ -28,13 +27,13 @@ const App: React.FC = () => {
     setCurrentView("login");
   };
   useEffect(() => {
-  if (!isAuthenticated) {
-    setCurrentView("landing");
-  }
-}, [isAuthenticated]);
+    if (!isAuthenticated) {
+      setCurrentView("landing");
+    }
+  }, [isAuthenticated]);
 
-  const reset = ()=>{
-        logoutUser()
+  const reset = () => {
+    logoutUser()
       .then((val: any) => {
         if (val.data.status) {
           dispatch(logout());
@@ -44,13 +43,13 @@ const App: React.FC = () => {
           toast.error(val.data?.message);
         }
       })
-      .catch((err:any) => {
+      .catch((err: any) => {
         toast.error(err.response.data.message.message);
       });
-  }
+  };
 
   const handleLogout = () => {
-    reset()
+    reset();
   };
   const goToLanding = () => {
     setCurrentView("landing");
@@ -111,8 +110,8 @@ const App: React.FC = () => {
     <>
       <Toaster richColors position="bottom-right" />
       <Routes>
+        <Route path="/:shordId" element={<Redirect />} />
         <Route path="/" element={renderCurrentView()} />
-        <Route path="/:shordId" element={<Redirect/>}/>
       </Routes>
     </>
   );
