@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { DashboardProps, UrlData } from "../interfaces/data.interfaces";
 import { ArrowLeft, Link, LogOut, Menu, RefreshCcw, X } from "lucide-react";
 import Button from "../components/Button";
@@ -17,14 +17,19 @@ const Dashboard: React.FC<DashboardProps> = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [rotate,setRotate] = useState<boolean>(false)
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+   const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const loaderRef = useRef<HTMLDivElement | null>(null);
+    const LIMIT = 5;
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
-      const fetchUrls = async () => {
+      const fetchUrls = async (skip = 0) => {
       try {
         setRotate(true)
-        const userUrls = await getUrls();
-        setUrls(userUrls.data);
+        const userUrls = await getUrls(skip, LIMIT);
+        if (userUrls.data.length < LIMIT) setHasMore(false);
+        setUrls((prev) => prev.length > 0 ? [...prev, ...userUrls?.data] : userUrls?.data);
       } catch (error) {
         console.error("Failed to fetch URLs:", error);
       } finally {
@@ -34,8 +39,32 @@ const Dashboard: React.FC<DashboardProps> = ({
     };
 
   useEffect(() => {
-    fetchUrls();
+    fetchUrls(0);
   }, []);
+
+    useEffect(() => {
+    if (!loaderRef.current || !hasMore) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          setPage((prev) => prev + 1);
+        }
+      },
+      { threshold: 1.0 }
+    );
+
+    observer.observe(loaderRef.current);
+
+    return () => {
+      if (loaderRef.current) observer.unobserve(loaderRef.current);
+    };
+  }, [loaderRef.current, hasMore]);
+
+    useEffect(() => {
+    if (page === 0) return;
+    fetchUrls(page * LIMIT);
+  }, [page]);
 
   const handleUrlShortened = (newUrl: UrlData) => {
     setUrls((prev) => [newUrl, ...prev]);
@@ -128,10 +157,15 @@ const Dashboard: React.FC<DashboardProps> = ({
           </Card>
         ) : (
           <div className="space-y-4">
-            {urls.map((url) => (
-              <UrlListItem key={url?.id} url={url} />
-            ))}
-          </div>
+          {urls.map((url) => (
+            <UrlListItem key={url.id} url={url} />
+          ))}
+          {hasMore && (
+            <div ref={loaderRef} className="text-center py-6 text-gray-500">
+              Loading more...
+            </div>
+          )}
+        </div>
         )}
       </main>
     </div>

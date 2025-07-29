@@ -24,8 +24,8 @@ export const shortLinks = (id:string)=>{
 return axiosInstance.get(`/url/${id}`)
 }
 
-export const getUrls = ()=>{
-  return axiosInstance.get(`/url`,{withCredentials:true})
+export const getUrls = (skip:number,limit:number)=>{
+  return axiosInstance.get(`/url?skip=${skip}&limit=${limit}`,{withCredentials:true})
 }
 
 export const logoutUser = () =>{
