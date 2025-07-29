@@ -21,7 +21,7 @@ export const createUrl = (FormData:any) =>{
 }
 
 export const shortLinks = (id:string)=>{
-return axiosInstance.get(`/url/${id}`,{withCredentials:true})
+return axiosInstance.get(`/url/${id}`)
 }
 
 export const getUrls = ()=>{
