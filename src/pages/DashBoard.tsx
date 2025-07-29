@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import type { DashboardProps, UrlData } from "../interfaces/data.interfaces";
-import { ArrowLeft, Link, LogOut, RefreshCcw } from "lucide-react";
+import { ArrowLeft, Link, LogOut, Menu, RefreshCcw, X } from "lucide-react";
 import Button from "../components/Button";
 import UrlShortenerForm from "../components/UrlShortenerForm";
 import LoadingSpinner from "../components/LoadingSpinner";
@@ -16,6 +16,9 @@ const Dashboard: React.FC<DashboardProps> = ({
   const [urls, setUrls] = useState<UrlData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [rotate,setRotate] = useState<boolean>(false)
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+
+  const toggleMenu = () => setMenuOpen(!menuOpen);
 
       const fetchUrls = async () => {
       try {
@@ -41,29 +44,49 @@ const Dashboard: React.FC<DashboardProps> = ({
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-50 to-white">
       <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div
-              className="flex items-center gap-3 cursor-pointer"
-              onClick={goToLanding}
-            >
-              <div className="w-10 h-10 bg-sky-100 rounded-full flex items-center justify-center">
-                <Link className="w-6 h-6 text-sky-600" />
-              </div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                URL Shortener
-              </h1>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center py-4">
+
+          <div
+            className="flex items-center gap-3 cursor-pointer"
+            onClick={goToLanding}
+          >
+            <div className="w-10 h-10 bg-sky-100 rounded-full flex items-center justify-center">
+              <Link className="w-6 h-6 text-sky-600" />
             </div>
-            <div className="flex items-center gap-4">
-              <span className="text-gray-700">Welcome, {user.name}</span>
-              <Button variant="secondary" onClick={onLogout}>
-                <LogOut className="w-4 h-4" />
-                Logout
-              </Button>
-            </div>
+            <h1 className="text-2xl font-bold text-gray-900">
+              URL Shortener
+            </h1>
+          </div>
+
+
+          <div className="md:hidden">
+            <button onClick={toggleMenu}>
+              {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+
+
+          <div className="hidden md:flex items-center gap-4">
+            <span className="text-gray-700">Welcome, {user.name}</span>
+            <Button variant="secondary" onClick={onLogout}>
+              <LogOut className="w-4 h-4" />
+              Logout
+            </Button>
           </div>
         </div>
-      </header>
+
+        {menuOpen && (
+          <div className="md:hidden flex flex-col gap-4 items-start pb-4 px-2">
+            <span className="text-gray-700">Welcome, {user.name}</span>
+            <Button variant="secondary" onClick={onLogout}>
+              <LogOut className="w-4 h-4" />
+              Logout
+            </Button>
+          </div>
+        )}
+      </div>
+    </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <button

@@ -110,10 +110,10 @@ const Register: React.FC<RegisterProps> = ({
   ]);
 
   return (
-    <div className="min-h-screen">
+     <div className="min-h-screen flex flex-col bg-gradient-to-br from-sky-50 to-white">
       <Navbar onNavigateToHome={goToLanding} />
-      <div className=" bg-gradient-to-br from-sky-50 to-white flex items-center justify-center p-4">
-        <Card className="w-full max-w-md p-8">
+      <div className="flex-grow flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12">
+        <Card className="w-full max-w-md sm:max-w-lg md:max-w-md lg:max-w-lg xl:max-w-md p-6 sm:p-8 shadow-xl">
           <div className="text-center mb-8">
             <div className="mx-auto w-16 h-16 bg-sky-100 rounded-full flex items-center justify-center mb-4">
               <User className="w-8 h-8 text-sky-600" />
@@ -122,7 +122,7 @@ const Register: React.FC<RegisterProps> = ({
             <p className="text-gray-600 mt-2">Sign up to get started</p>
           </div>
 
-          <div>
+          <form onSubmit={(e) => e.preventDefault()}>
             <Input
               label="Full Name"
               type="text"
@@ -172,7 +172,8 @@ const Register: React.FC<RegisterProps> = ({
               required
               aria-describedby={error ? "form-error" : undefined}
             />
-            <div className="text-sm text-gray-500 mt-1 ml-1 mb-5">
+
+            <div className="text-sm text-gray-500 mt-2 ml-1 mb-5">
               Password must include:
               <ul className="list-disc list-inside ml-2">
                 <li>At least 8 characters</li>
@@ -196,13 +197,11 @@ const Register: React.FC<RegisterProps> = ({
             <Button
               onClick={debouncedSubmit}
               disabled={loading}
-              className={`w-full mb-4 ${
-                loading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              className={`w-full mb-4 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
             >
               {loading ? <LoadingSpinner /> : "Create Account"}
             </Button>
-          </div>
+          </form>
 
           <div className="text-center">
             <p className="text-gray-600">
