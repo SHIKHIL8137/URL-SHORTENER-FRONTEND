@@ -110,7 +110,7 @@ const App: React.FC = () => {
     <>
       <Toaster richColors position="bottom-right" />
       <Routes>
-        <Route path="/:shordId" element={<Redirect />} />
+        <Route path="/url/:shordId" element={<Redirect />} />
         <Route path="/" element={renderCurrentView()} />
       </Routes>
     </>
