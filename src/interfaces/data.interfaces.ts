@@ -37,6 +37,10 @@ export interface UrlListItemProps {
   url: UrlData;
 }
 
+export interface ChangePasswordProps{
+   handleClose: () => void 
+}
+
 export interface UrlShortenerFormProps {
   onUrlShortened: (newUrl: UrlData) => void;
 }

@@ -84,6 +84,7 @@ const Register: React.FC<RegisterProps> = ({
         name: trimmedName,
         email: trimmedEmail,
         password: trimmedPassword,
+        role:'user'
       });
       if (result.data?.status) {
         onRegister();

@@ -31,3 +31,7 @@ export const getUrls = (skip:number,limit:number)=>{
 export const logoutUser = () =>{
   return axiosInstance.get('/auth/logout',{withCredentials:true});
 }
+
+export const resetPassword = (formData:{currentPassword: string,newPassword: string})=>{
+  return axiosInstance.patch('/auth/resetpassword',formData,{withCredentials:true})
+}

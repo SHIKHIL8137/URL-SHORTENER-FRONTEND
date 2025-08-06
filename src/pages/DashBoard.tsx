@@ -1,12 +1,23 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import type { DashboardProps, UrlData } from "../interfaces/data.interfaces";
-import { ArrowLeft, Link, LogOut, Menu, RefreshCcw, X } from "lucide-react";
+import {
+  ArrowLeft,
+  Link,
+  LockIcon,
+  LogOut,
+  Menu,
+  RefreshCcw,
+  Settings,
+  X,
+} from "lucide-react";
 import Button from "../components/Button";
 import UrlShortenerForm from "../components/UrlShortenerForm";
 import LoadingSpinner from "../components/LoadingSpinner";
 import Card from "../components/Card";
 import UrlListItem from "../components/UrlListItem";
 import { getUrls } from "../api/Api";
+import { toast } from "sonner";
+import ChangePassword from "../components/UpdatePassword";
 
 const LIMIT = 5;
 
@@ -22,6 +33,9 @@ const Dashboard: React.FC<DashboardProps> = ({
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const observer = useRef<IntersectionObserver | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
 
@@ -34,7 +48,8 @@ const Dashboard: React.FC<DashboardProps> = ({
       setUrls((prev) =>
         skip === 0 ? userUrls.data : [...prev, ...userUrls.data]
       );
-    } catch (error) {
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message?.message);
       console.error("Failed to fetch URLs:", error);
     } finally {
       setLoading(false);
@@ -93,22 +108,39 @@ const Dashboard: React.FC<DashboardProps> = ({
 
             <div className="md:hidden">
               <button onClick={toggleMenu}>
-                {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                {menuOpen ? (
+                  <X className="w-6 h-6" />
+                ) : (
+                  <Menu className="w-6 h-6" />
+                )}
               </button>
             </div>
 
-            <div className="hidden md:flex items-center gap-4">
-              <span className="text-gray-700">Welcome, {user.name}</span>
-              <Button variant="secondary" onClick={onLogout}>
-                <LogOut className="w-4 h-4" />
-                Logout
-              </Button>
+            <div className="hidden md:flex justify-end items-center group relative w-md pr-4">
+              <span className="text-gray-700 z-10 bg-white pr-2 transform transition-transform duration-300 group-hover:-translate-x-85">
+                Welcome, {user.name}
+              </span>
+
+              <div className="absolute right-4 flex items-center gap-4 opacity-0 translate-x-10 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 z-20">
+                <Button variant="secondary" onClick={handleOpenModal}>
+                  <LockIcon className="w-4 h-4" />
+                  Reset Password
+                </Button>
+                <Button variant="secondary" onClick={onLogout}>
+                  <LogOut className="w-4 h-4" />
+                  Logout
+                </Button>
+              </div>
             </div>
           </div>
 
           {menuOpen && (
             <div className="md:hidden flex flex-col gap-4 items-start pb-4 px-2">
               <span className="text-gray-700">Welcome, {user.name}</span>
+              <Button variant="secondary" onClick={handleOpenModal}>
+                <LockIcon className="w-4 h-4" />
+                Reset Password
+              </Button>
               <Button variant="secondary" onClick={onLogout}>
                 <LogOut className="w-4 h-4" />
                 Logout
@@ -131,7 +163,9 @@ const Dashboard: React.FC<DashboardProps> = ({
         <div className="flex justify-between items-center">
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Your URLs</h2>
-            <p className="text-gray-600">Manage and track your shortened URLs</p>
+            <p className="text-gray-600">
+              Manage and track your shortened URLs
+            </p>
           </div>
           <button
             className="cursor-pointer text-sky-800 transition-all hover:text-sky-600"
@@ -153,7 +187,9 @@ const Dashboard: React.FC<DashboardProps> = ({
         ) : urls.length === 0 ? (
           <Card className="p-12 text-center">
             <Link className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No URLs yet</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              No URLs yet
+            </h3>
             <p className="text-gray-600">
               Create your first shortened URL using the form above.
             </p>
@@ -171,6 +207,7 @@ const Dashboard: React.FC<DashboardProps> = ({
           </div>
         )}
       </main>
+      {isModalOpen && <ChangePassword handleClose={handleCloseModal} />}
     </div>
   );
 };
