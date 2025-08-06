@@ -7,7 +7,6 @@ import {
   LogOut,
   Menu,
   RefreshCcw,
-  Settings,
   X,
 } from "lucide-react";
 import Button from "../components/Button";
