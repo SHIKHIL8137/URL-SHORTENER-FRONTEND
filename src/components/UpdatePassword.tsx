@@ -4,6 +4,7 @@ import type { ChangePasswordProps } from "../interfaces/data.interfaces";
 import { validatePassword } from "../utils/validator";
 import { resetPassword } from "../api/Api";
 import { toast } from "sonner";
+import LoadingSpinner from "./LoadingSpinner";
 
 const ChangePassword: React.FC<ChangePasswordProps> = ({ handleClose }) => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
@@ -14,6 +15,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ handleClose }) => {
     newPassword: "",
     confirmPassword: "",
   });
+  const [loading,setLoading] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const handleInputChange = (field: string, value: string) => {
@@ -57,6 +59,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ handleClose }) => {
     e.preventDefault();
     if (validateForm()) {
       try {
+        setLoading(true)
         const { confirmPassword, ...data } = formData;
         const response = await resetPassword(data);
         if (response.data?.status) {
@@ -70,6 +73,8 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ handleClose }) => {
         }
       } catch (error: any) {
         toast.error(error?.response?.data?.message?.message);
+      }finally{
+        setLoading(false)
       }
     }
   };
@@ -220,7 +225,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ handleClose }) => {
                 <li>One special character (!@#$...)</li>
               </ul>
             </div>
-          <div className="flex space-x-3 pt-4">
+          {loading ? (<LoadingSpinner/>):(<div className="flex space-x-3 pt-4">
             <button
               type="button"
               onClick={handleClose}
@@ -234,7 +239,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ handleClose }) => {
             >
               Update Password
             </button>
-          </div>
+          </div>)}
         </form>
       </div>
     </div>
